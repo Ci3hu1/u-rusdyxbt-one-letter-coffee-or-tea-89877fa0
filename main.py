@@ -14,7 +14,12 @@ LETTER = "A"  # A = coffee
 
 
 def main() -> None:
-    out_dir = os.environ.get("ENTRY_OUTPUT_DIR", "/output")
+    # Prefer the kit harness convention (MAKEFUN_OUTPUT_DIR), fall back to
+    # ENTRY_OUTPUT_DIR for local runs, then the default /output.
+    out_dir = os.environ.get(
+        "MAKEFUN_OUTPUT_DIR",
+        os.environ.get("ENTRY_OUTPUT_DIR", "/output"),
+    )
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="") as handle:
